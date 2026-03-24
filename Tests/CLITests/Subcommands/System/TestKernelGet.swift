@@ -30,10 +30,9 @@ class TestCLIKernelGet: CLITest {
     var remoteTar: URL! {
         URL(string: defaultKernelTar)
     }
-    var localTarPath: URL! {
-        /// A description
+    var localTarPath: URL {
         set {}
-        get { URL(string: "about:blank") }
+        get { URL(fileURLWithPath: ".") }
     }
 
     let defaultBinaryPath = DefaultsStore.get(key: .defaultKernelBinaryPath)
@@ -110,11 +109,11 @@ class TestCLIKernelGet: CLITest {
         try await withTempDir { tempDir in
             // manually download the tar file
             localTarPath = tempDir.appending(path: remoteTar.lastPathComponent)
-            try await ContainerAPIClient.FileDownloader.downloadFile(url: remoteTar, to: localTarPath!)
+            try await ContainerAPIClient.FileDownloader.downloadFile(url: remoteTar, to: localTarPath)
             let symlinkTarget = try getArchiveSymlinkTarget(symlinkName: symlinkBinaryPath)
             let extraArgs: [String] = [
                 "--tar",
-                localTarPath!.path,
+                localTarPath.path,
                 "--binary",
                 symlinkBinaryPath,
             ]
@@ -148,7 +147,7 @@ class TestCLIKernelGet: CLITest {
             let symlinkTarget = try getArchiveSymlinkTarget(symlinkName: defaultBinaryPath)
 
             // extract just the file we want
-            let targetPath = tempDir.appending(path: URL(string: defaultBinaryPath)!.lastPathComponent)
+            let targetPath = tempDir.appending(path: URL(fileURLWithPath: defaultBinaryPath).lastPathComponent)
             let archiveReader = try ArchiveReader(file: localTarPath)
             let (_, data) = try archiveReader.extractFile(path: defaultBinaryPath)
             try data.write(to: targetPath, options: .atomic)
@@ -158,11 +157,8 @@ class TestCLIKernelGet: CLITest {
                 targetPath.path,
             ]
             try doKernelSet(extraArgs: extraArgs)
-            if let url = URL(string: symlinkTarget) {
-                let lastPart = url.lastPathComponent
-                try doKernelGet(expectedLastPathComponent: lastPart)
-                print(lastPart)
-            }
+            let url = URL(fileURLWithPath: symlinkTarget)
+            try doKernelGet(expectedLastPathComponent: url.lastPathComponent)
         }
     }
 }
