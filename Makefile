@@ -205,6 +205,7 @@ integration: init-block
 		$(SWIFT) test -c $(BUILD_CONFIGURATION) $(SWIFT_CONFIGURATION) --filter TestCLIExportCommand || exit_code=1 ; \
 		$(SWIFT) test -c $(BUILD_CONFIGURATION) $(SWIFT_CONFIGURATION) --filter TestCLIVolumes || exit_code=1 ; \
 		$(SWIFT) test -c $(BUILD_CONFIGURATION) $(SWIFT_CONFIGURATION) --filter TestCLIKernelSet || exit_code=1 ; \
+		$(SWIFT) test -c $(BUILD_CONFIGURATION) $(SWIFT_CONFIGURATION) --filter TestCLIKernelGet || exit_code=1 ; \
 		$(SWIFT) test -c $(BUILD_CONFIGURATION) $(SWIFT_CONFIGURATION) --filter TestCLIAnonymousVolumes || exit_code=1 ; \
 		$(SWIFT) test -c $(BUILD_CONFIGURATION) $(SWIFT_CONFIGURATION) --filter TestCLINoParallelCases || exit_code=1 ; \
 		echo Ensuring apiserver stopped after the CLI integration tests ; \

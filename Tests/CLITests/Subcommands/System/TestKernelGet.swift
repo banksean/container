@@ -107,7 +107,7 @@ class TestCLIKernelGet: CLITest {
     @Test func fromLocalTar() async throws {
         let symlinkBinaryPath: String = URL(filePath: defaultBinaryPath).deletingLastPathComponent().appending(path: "vmlinux.container").relativePath
 
-        try await withFixedTempDir { tempDir in
+        try await withTempDir { tempDir in
             // manually download the tar file
             localTarPath = tempDir.appending(path: remoteTar.lastPathComponent)
             try await ContainerAPIClient.FileDownloader.downloadFile(url: remoteTar, to: localTarPath!)
@@ -141,7 +141,7 @@ class TestCLIKernelGet: CLITest {
     }
 
     @Test func fromLocalDisk() async throws {
-        try await withFixedTempDir { tempDir in
+        try await withTempDir { tempDir in
             // manually download the tar file
             let localTarPath = tempDir.appending(path: remoteTar.lastPathComponent)
             try await ContainerAPIClient.FileDownloader.downloadFile(url: remoteTar, to: localTarPath)
