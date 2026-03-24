@@ -24,7 +24,8 @@ extension Application {
             commandName: "kernel",
             abstract: "Manage the default kernel configuration",
             subcommands: [
-                KernelSet.self
+                KernelSet.self,
+                KernelGet.self
             ]
         )
 
